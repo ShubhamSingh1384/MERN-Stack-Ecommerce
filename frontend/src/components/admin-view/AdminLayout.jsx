@@ -7,7 +7,7 @@ function AdminLayout() {
   return (
     <div className="flex min-h-screen w-full">
       {/* admin sidebar */}
-      
+      <h1>this is adminLayout</h1>
       <div className="flex flex-1 flex-col">
         {/* admin header */}
         

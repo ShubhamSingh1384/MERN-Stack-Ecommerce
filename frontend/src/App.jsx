@@ -14,33 +14,60 @@ import ShopHome from './pages/shopping-view/ShopHome'
 import ShopListing from './pages/shopping-view/ShopListing'
 import ShopAccount from './pages/shopping-view/ShopAccount'
 import ShopCheckout from './pages/shopping-view/ShopCheckout'
+import UnauthPage from './pages/unauth-page/UnauthPage'
+import CheckAuth from './components/common/CheckAuth'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+
+  const isAuthenticated = false;
+  const user = {
+    name: "Shubham",
+    role: "admin"
+  }
+
   return (
     <>
-      {/* <h1>Header of Emcommerce</h1> */}
+      <ToastContainer/>
       <Routes>
-        <Route path='/auth' element={<AuthLayout/>}>
+        <Route path="/" 
+        element={<CheckAuth isAuthenticated={isAuthenticated} user={user}></CheckAuth>}/>
+        
+        <Route path='/auth' element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <AuthLayout/>
+          </CheckAuth>
+        }>
+
           <Route path='login' element={<Login/>}/>
           <Route path='signup' element={<Signup/>}/>
         </Route>
 
-        <Route path='/admin' element={<AdminLayout/>}>
+        <Route path='/admin' element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <AdminLayout />
+          </CheckAuth>
+        }>
           <Route path='dashboard' element={<AdminDashboard/>}/>
           <Route path='order' element={<AdminOrders/>}/>
           <Route path='product' element={<AdminProducts/>}/>
           <Route path='feature' element={<AdminFeatures/>}/>
         </Route>
 
-        <Route path='/shop' element={<ShoppingLayout/>}>
+        <Route path='/shop' element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <ShoppingLayout/>
+          </CheckAuth>
+          }>
           <Route path='home' element={<ShopHome/>}/>
           <Route path='listing' element={<ShopListing/>}/>
           <Route path='account' element={<ShopAccount/>}/>
           <Route path='checkout' element={<ShopCheckout/>}/>
         </Route>
 
-
+        <Route path='/unauth-page' element={<UnauthPage/>}/>
         <Route path='*' element={<NotFound/>} />
       </Routes>
 
