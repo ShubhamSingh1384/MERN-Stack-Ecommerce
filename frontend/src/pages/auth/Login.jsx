@@ -21,11 +21,19 @@ const Login = () => {
     event.preventDefault();
     dispatch(loginUser(formData))
     .then((data) =>{
+      // console.log("message :" , data.payload.message);
       if(data?.payload?.success){
-        toast.success(data.payload.message);
         navigate('/shop/home');
+        toast.success(data.payload.message);
       }
-    });
+      else{
+        console.log(data);
+        toast.error(data.payload.message)
+      }
+    })
+    .catch((error) =>{
+      console.log(error);
+    })
   }
 
   return (

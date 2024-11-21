@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import AuthLayout from './components/auth/AuthLayout'
 import Login from './pages/auth/Login'
@@ -19,14 +19,24 @@ import CheckAuth from './components/common/CheckAuth'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux'
+import { checkAuth } from './store/authSlice/index'
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const App = () => {
 
-  const isAuthenticated = false;
-  const user = {
-    name: "Shubham",
-    role: "admin"
-  }
+  const {isAuthenticated, user, isLoading} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  
+  useEffect(() =>{
+    dispatch(checkAuth());
+  }, [dispatch])
+  
+  
+  if(isLoading) return <Skeleton className="w-[600px] h-[600px] rounded-full" />
+
+  // console.log(isAuthenticated, user, isLoading);
 
   return (
     <>
@@ -51,9 +61,9 @@ const App = () => {
           </CheckAuth>
         }>
           <Route path='dashboard' element={<AdminDashboard/>}/>
-          <Route path='order' element={<AdminOrders/>}/>
-          <Route path='product' element={<AdminProducts/>}/>
-          <Route path='feature' element={<AdminFeatures/>}/>
+          <Route path='orders' element={<AdminOrders/>}/>
+          <Route path='products' element={<AdminProducts/>}/>
+          <Route path='features' element={<AdminFeatures/>}/>
         </Route>
 
         <Route path='/shop' element={

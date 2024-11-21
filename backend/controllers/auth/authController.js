@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
   const { userName, email, password } = req.body;
-  // console.log("signup is called")
-  // console.log(userName, email, password)
+  // //console.log("signup is called")
+  // //console.log(userName, email, password)
 
   try {
     const checkUser = await user.findOne({ email });
@@ -19,10 +19,11 @@ const signup = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 12);
+    //console.log(hashPassword);
     const newUser = new user({
       userName,
       email,
-      password: hashPassword,
+      password: hashPassword
     });
 
     await newUser.save();
@@ -32,7 +33,7 @@ const signup = async (req, res) => {
       message: "Registration Successful",
     });
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.status(500).json({
       success: false,
       message: "Some error occured",
@@ -43,11 +44,12 @@ const signup = async (req, res) => {
 //login
 
 const login = async (req, res) => {
+  // console.log("login called")
   const { email, password } = req.body;
-
+  // console.log(email, password);
   try {
     const checkUser = await user.findOne({ email });
-
+    // console.log(checkUser)
     if (!checkUser) {
       return res.json({
         success: false,
@@ -55,6 +57,7 @@ const login = async (req, res) => {
       });
     }
 
+    //console.log(checkUser);
     const checkPasswordMatch = await bcrypt.compare(
       password,
       checkUser.password
@@ -75,7 +78,7 @@ const login = async (req, res) => {
         userName: checkUser.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      { expiresIn: "1d" }
+      { expiresIn: "60m" }
     );
 
     res.cookie("token", token, { httpOnly: true, secure: false }).json({
@@ -88,8 +91,48 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("error in login : ", error);
+    //console.log("error in login : ", error);
   }
 };
 
-module.exports = { signup, login };
+// logout
+
+const logout = (req, res) =>{
+  // console.log("logout called")
+  res.clearCookie('token').json({
+    success: true,
+    message: 'Logged out Successfully!'
+  })
+}
+
+// auth MiddleWare
+
+const authMiddleware = async(req, res, next)=>{
+  const token = req.cookies.token;
+  // console.log("token is : " , token);
+  if(!token){
+    // console.log("token not found");
+    return res.status(400).json({
+      success : false,
+      message : 'Unauthorised user !'
+    })
+  }
+  // console.log(process.env.CLIENT_SECRET_KEY)
+  try {
+    const decoded = jwt.verify(token, process.env.CLIENT_SECRET_KEY);
+    // console.log("decoded is : " , decoded);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    // console.log("error called ");
+    res.status(401).json({
+      success : false,
+      message : 'Unauthorised user !'
+    })
+  }
+
+}
+
+
+
+module.exports = { signup, login, logout, authMiddleware };
