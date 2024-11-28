@@ -44,9 +44,9 @@ const signup = async (req, res) => {
 //login
 
 const login = async (req, res) => {
-  // console.log("login called")
+  console.log("login called")
   const { email, password } = req.body;
-  // console.log(email, password);
+  console.log(email, password);
   try {
     const checkUser = await user.findOne({ email });
     // console.log(checkUser)
@@ -88,10 +88,11 @@ const login = async (req, res) => {
         email: checkUser.email,
         role: checkUser.role,
         id: checkUser._id,
+        userName: checkUser.userName,
       },
     });
   } catch (error) {
-    //console.log("error in login : ", error);
+    console.log("error in login : ", error);
   }
 };
 

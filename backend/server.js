@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const authRouter = require('./routes/auth/authRoutes')
+const adminProductRouter = require('./routes/admin/productsRoutes')
+const shopProductsRouter = require('./routes/shop/productsRoutes')
 
 PORT = process.env.PORT || 5000;
 dotenv.config({path:"./config/config.env"});
@@ -39,6 +41,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 
 app.use('/api/auth', authRouter);
+app.use('/api/admin/products', adminProductRouter);
+app.use('/api/shop/products', shopProductsRouter)
 
 
 

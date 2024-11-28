@@ -12,7 +12,6 @@ function AdminLayout() {
     <div className="flex min-h-screen w-full">
       {/* admin sidebar */}
       <Sidebar open={openSidebar} setOpen={setOpenSidebar} />
-      {/* <h1>this is adminLayout</h1> */}
       <div className="flex flex-1 flex-col">
         {/* admin header */}
         <Header setOpen={setOpenSidebar}/>
