@@ -4,7 +4,11 @@ import { Button } from "../ui/button";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 
 
-function ShoppingProductTile({ product, handleGetProductDetails }) {
+function ShoppingProductTile({ 
+  product, 
+  handleGetProductDetails,
+  handleAddToCart,
+}) {
 
     
   return (
@@ -47,21 +51,21 @@ function ShoppingProductTile({ product, handleGetProductDetails }) {
             ) : null}
           </div>
         </CardContent>
-        <CardFooter>
-          {product?.totalStock === 0 ? (
-            <Button className="w-full opacity-60 cursor-not-allowed">
-              Out Of Stock
-            </Button>
-          ) : (
-            <Button
-              // onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
-              className="w-full"
-            >
-              Add to cart
-            </Button>
-          )}
-        </CardFooter>
       </div>
+      <CardFooter>
+        {product?.totalStock === 0 ? (
+          <Button className="w-full opacity-60 cursor-not-allowed">
+            Out Of Stock
+          </Button>
+        ) : (
+          <Button
+            onClick={() => handleAddToCart(product?._id, product?.totalStock)}
+            className="w-full"
+          >
+            Add to cart
+          </Button>
+        )}
+      </CardFooter>
     </Card>
   );
 }

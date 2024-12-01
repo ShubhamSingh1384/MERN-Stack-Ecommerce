@@ -4,6 +4,7 @@ import ShoppingProductTile from "@/components/shopping-view/ProductTile";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+import { addToCart, fetchCartItems } from "@/store/shop/cartSlice";
 import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/productSlice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ const createSearchParamsHelper = (filterParams) =>{
 function ShoppingListing() {
 
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth)
   const {productsList, productDetails} = useSelector(state => state.shopProducts);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
@@ -64,6 +66,17 @@ function ShoppingListing() {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
 
     // console.log(cpyFilters)
+  }
+
+  const handleAddToCart = (getCurrentProductId)=>{
+    console.log(getCurrentProductId);
+    dispatch(addToCart({userId: user?.id, productId: getCurrentProductId, quantity: 1}))
+    .then((data) => {
+      if(data?.payload?.success){
+        dispatch(fetchCartItems(user?.id))
+        .then((data)=> console.log(data));
+      }
+    });
   }
 
   useEffect(() =>{
@@ -140,6 +153,7 @@ function ShoppingListing() {
             <ShoppingProductTile 
             product={productsItem}
             handleGetProductDetails={handleGetProductDetails}
+            handleAddToCart={handleAddToCart}
             />) : null
           }
         </div>

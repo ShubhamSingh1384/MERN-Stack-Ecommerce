@@ -60,7 +60,7 @@ const shoppingProductSlice = createSlice({
       })
       .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.productList = [];
+        state.productsList = [];
       })
       .addCase(fetchProductDetails.pending, (state, action) => {
         state.isLoading = true;

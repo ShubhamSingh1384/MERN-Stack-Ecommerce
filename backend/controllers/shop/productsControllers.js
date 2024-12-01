@@ -1,11 +1,11 @@
 const Product = require("../../models/productModel");
 
 const getFilteredProducts = async (req, res) => {
-    console.log("getFilerdProducts called");
+    // console.log("getFilerdProducts called");
   try {
     const { category = [], brand = [], sortBy = "price-lowtohigh" } = req.query;
     
-    console.log(req.query);
+    // console.log(req.query);
 
     let filters = {};
 
@@ -73,7 +73,7 @@ const getProductDetails = async (req, res) => {
       success: true,
       data: product,
     });
-  } catch (e) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,

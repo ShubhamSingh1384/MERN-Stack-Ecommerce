@@ -16,12 +16,13 @@ import ShopAccount from './pages/shopping-view/ShopAccount'
 import ShopCheckout from './pages/shopping-view/ShopCheckout'
 import UnauthPage from './pages/unauth-page/UnauthPage'
 import CheckAuth from './components/common/CheckAuth'
+import { Skeleton } from "@/components/ui/skeleton"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuth } from './store/authSlice/index'
-import { Skeleton } from "@/components/ui/skeleton"
+
 
 
 const App = () => {
