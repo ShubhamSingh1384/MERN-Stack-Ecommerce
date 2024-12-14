@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth/authRoutes')
 const adminProductRouter = require('./routes/admin/productsRoutes')
 const shopProductsRouter = require('./routes/shop/productsRoutes')
 const shopCartRouter = require('./routes/shop/cartRoutes')
+const shopAddressRouter = require('./routes/shop/addressRoutes')
 
 PORT = process.env.PORT || 5000;
 dotenv.config({path:"./config/config.env"});
@@ -45,6 +46,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/admin/products', adminProductRouter);
 app.use('/api/shop/products', shopProductsRouter);
 app.use('/api/shop/cart', shopCartRouter)
+app.use('api/shop/address', shopAddressRouter)
 
 
 

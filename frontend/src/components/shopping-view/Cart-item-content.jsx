@@ -1,10 +1,29 @@
 import { Minus, Plus, Trash } from "lucide-react";
 import { Button } from "../ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCartItem, updateCartQuantity } from "@/store/shop/cartSlice";
 
 
 
 
 function UserCartContent({ cartItem }) {
+  // console.log("cartItem ", cartItem);
+  // console.log("user", user);
+  const {user} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  function handleCartItemDelete(getCartItem){
+    dispatch(deleteCartItem({ userId: user?.id , productId : getCartItem?.productId }))
+  }
+  function handleUpdateQuantity(getCartItem, typeOfAction){
+    // console.log("cartItem ", cartItem);
+    dispatch(updateCartQuantity({ 
+      userId:user?.id, 
+      productId: getCartItem?.productId, 
+      quantity: (typeOfAction === 'plus')? getCartItem?.quantity + 1 : getCartItem?.quantity - 1
+    }))
+  }
+
   return (
     <div className="flex items-center space-x-4">
       <img
@@ -20,7 +39,7 @@ function UserCartContent({ cartItem }) {
             className="h-8 w-8 rounded-full"
             size="icon"
             disabled={cartItem?.quantity === 1}
-            // onClick={() => handleUpdateQuantity(cartItem, "minus")}
+            onClick={() => handleUpdateQuantity(cartItem, "minus")}
           >
             <Minus className="w-4 h-4" />
             <span className="sr-only">Decrease</span>
@@ -30,7 +49,7 @@ function UserCartContent({ cartItem }) {
             variant="outline"
             className="h-8 w-8 rounded-full"
             size="icon"
-            // onClick={() => handleUpdateQuantity(cartItem, "plus")}
+            onClick={() => handleUpdateQuantity(cartItem, "plus")}
           >
             <Plus className="w-4 h-4" />
             <span className="sr-only">Decrease</span>
@@ -46,7 +65,7 @@ function UserCartContent({ cartItem }) {
           ).toFixed(2)}
         </p>
         <Trash
-        //   onClick={() => handleCartItemDelete(cartItem)}
+          onClick={() => handleCartItemDelete(cartItem)}
           className="cursor-pointer mt-1"
           size={20}
         />

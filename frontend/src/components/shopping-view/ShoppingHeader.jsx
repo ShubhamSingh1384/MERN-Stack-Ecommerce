@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/authSlice";
 import UserCartWrapper from "./CartWrapper";
 import { fetchCartItems } from "@/store/shop/cartSlice";
+import { fetchAllFilteredProducts } from "@/store/shop/productSlice";
 
 
 function HeaderRightContent() {
@@ -25,6 +26,7 @@ function HeaderRightContent() {
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
 
   function handleLogout() {
     dispatch(logoutUser());
@@ -71,10 +73,26 @@ function HeaderRightContent() {
 }
 
 function MenuItems() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  function handleNavigate(getCurrentMenuItem){
+    sessionStorage.removeItem('filters');
+    const currentFilter = getCurrentMenuItem.id !== 'home' ?
+    {
+      category : [getCurrentMenuItem.id]
+    } : null
+
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter));
+    navigate(getCurrentMenuItem.path)
+  }
+
+  
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Link
+          onClick={() => handleNavigate(menuItem)}
           className="text-sm font-medium"
           key={menuItem.id}
           to={menuItem.path}
