@@ -36,7 +36,7 @@ function HeaderRightContent() {
     dispatch(fetchCartItems(user?.id));
   }, [dispatch]);
 
-  console.log("cartItems : ", cartItems);
+  // console.log("cartItems : ", cartItems);
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Sheet open={openCartSheet} onOpenChange={()=>setOpenCartSheet(false)}>
